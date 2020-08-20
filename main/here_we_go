@@ -10,7 +10,7 @@
 # ----- check if temp folder exists then create temp folder
 
 echo 'java -jar inside/wordToHtml.jar inside/word.doc'
-sleep 2
+sleep 1
 
 java -jar inside/wordToHtml.jar writing_space/word.doc
 
@@ -26,8 +26,15 @@ if [ -d $directory_name ]
 then
     mv html/writing_space/$fileDate.html $directory_name/.
 else
+    read -n 1 -p "Create new directory(Y/n)? <>" blogInput
+    if [ "$blogInput" = "n" ]
+    then
+        echo "exiting"
+        exit
+    fi
+    echo $0
     mkdir $directory_name
-    mv html/writing_space/$fileDate.doc $directory_name/.
+    mv html/writing_space/$fileDate.html $directory_name/.
 fi
 
 # if January-2020 doesnt exist
