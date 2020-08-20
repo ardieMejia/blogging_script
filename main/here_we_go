@@ -37,6 +37,26 @@ else
     mv html/writing_space/$fileDate.html $directory_name/.
 fi
 
+# ---------- so many options possible to extract body content including long winding and confusing python ----------
+# ---------- scripts calling scripts, installing libs, path issues, NO THANKS ----------
+
+cat $directory_name/$fileDate.html | tr -d '\n' > $directory_name/$fileDate.html_TEMP
+
+# ---------- so many options possible to extract body content including long winding and confusing python ----------
+
+
+# ---------- body content
+awk 'BEGIN{FS="<body"}{print "<body"$2}' $directory_name/$fileDate.html_TEMP | awk 'BEGIN{FS="</body"}{print $1"</body>"}' > $directory_name/$fileDate.html
+
+
+
+# ---------- Wow!! This was quite brilliant on my part!! removing html attributes by first splitting content into many lines, behaving like a parser I guess
+sed  's/ class/\n/g' $directory_name/$fileDate.html | sed 's/">/"\n>/g' > $directory_name/$fileDate.html_TEMP
+sed -i '/=/d' $directory_name/$fileDate.html_TEMP
+cat $directory_name/$fileDate.html_TEMP | tr -d '\n' > $directory_name/$fileDate.html
+
+rm $directory_name/$fileDate.html_TEMP
+
 # if January-2020 doesnt exist
 # ask to create  January, if not, exit code
 # move 12-01-2020.doc to January-2020/
@@ -44,4 +64,8 @@ fi
 # insert simple tag
 # with 'Posted at 10:30 PM'
 # <div style="width:100px;margin-left:auto;margin-right:auto;float:center;display:block"></div>
+
+
+
+
 
