@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# ----- bash shell execution can mess with ur head when it comes
+# ----- environment (relative directory stuff)
+# ----- directories below work coz bash assumes environment is where you executed it from,
+# ----- (not where the file is located)
+
+
+# -----
+# ----- check if temp folder exists then create temp folder
+
+echo 'java -jar inside/wordToHtml.jar inside/word.doc'
+sleep 2
+
+java -jar inside/wordToHtml.jar writing_space/word.doc
+
+
+
+
+
+echo
+fileDate=`date +"%d-%m-%Y"`
+mv html/writing_space/word.html html/writing_space/$fileDate.html
+directory_name=`date +"%B-%Y"` # Eg: January-2020
+if [ -d $directory_name ]
+then
+    mv html/writing_space/$fileDate.html $directory_name/.
+else
+    mkdir $directory_name
+    mv html/writing_space/$fileDate.doc $directory_name/.
+fi
+
+# if January-2020 doesnt exist
+# ask to create  January, if not, exit code
+# move 12-01-2020.doc to January-2020/
+# remove header tags
+# insert simple tag
+# with 'Posted at 10:30 PM'
+# <div style="width:100px;margin-left:auto;margin-right:auto;float:center;display:block"></div>
+
