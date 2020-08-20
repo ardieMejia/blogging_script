@@ -37,6 +37,12 @@ else
     mv html/writing_space/$fileDate.html $directory_name/.
 fi
 
+sed -n '/\.s1/p' $directory_name/$fileDate.html >> css_temp/temp-styles.css
+sed -n '/\.p1/p' $directory_name/$fileDate.html >> css_temp/temp-styles.css
+
+sed -i 's/class="p1"/ccllaass#"p1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
+sed -i 's/class="s1"/ccllaass#"s1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
+
 # ---------- so many options possible to extract body content including long winding and confusing python ----------
 # ---------- scripts calling scripts, installing libs, path issues, NO THANKS ----------
 
@@ -57,6 +63,11 @@ cat $directory_name/$fileDate.html_TEMP | tr -d '\n' > $directory_name/$fileDate
 
 rm $directory_name/$fileDate.html_TEMP
 
+sed -i 's/ccllaass#"p1"/class="p1"/g' $directory_name/$fileDate.html # reverse pattern removal
+sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse pattern removal
+
+echo > css_temp/temp-styles.css
+
 # if January-2020 doesnt exist
 # ask to create  January, if not, exit code
 # move 12-01-2020.doc to January-2020/
@@ -66,6 +77,9 @@ rm $directory_name/$fileDate.html_TEMP
 # <div style="width:100px;margin-left:auto;margin-right:auto;float:center;display:block"></div>
 
 
+# ------ more fixes required:
+# ---------- retain style for s1 & p1, concatenate to temporary css file
+# ---------- retain class s1 & p1
 
 
 
