@@ -37,8 +37,8 @@ else
     mv html/writing_space/$fileDate.html $directory_name/.
 fi
 
-sed -n '/\.s1/p' $directory_name/$fileDate.html >> css_temp/temp-styles.css
-sed -n '/\.p1/p' $directory_name/$fileDate.html >> css_temp/temp-styles.css
+sed -n '/\.s1/p' $directory_name/$fileDate.html >> _temp/temp-styles.css
+sed -n '/\.p1/p' $directory_name/$fileDate.html >> _temp/temp-styles.css
 
 sed -i 's/class="p1"/ccllaass#"p1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
 sed -i 's/class="s1"/ccllaass#"s1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
@@ -66,7 +66,7 @@ rm $directory_name/$fileDate.html_TEMP
 sed -i 's/ccllaass#"p1"/class="p1"/g' $directory_name/$fileDate.html # reverse pattern removal
 sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse pattern removal
 
-# echo > css_temp/temp-styles.css
+# echo > _temp/temp-styles.css
 
 # if January-2020 doesnt exist
 # ask to create  January, if not, exit code
