@@ -21,7 +21,7 @@ java -jar inside/wordToHtml.jar writing_space/word.doc
 echo
 fileDate=`date +"%d-%m-%Y"`
 mv html/writing_space/word.html html/writing_space/$fileDate.html
-directory_name=`date +"%B-%Y"` # Eg: January-2020
+directory_name="blogposts/"`date +"%B-%Y"` # Eg: January-2020
 if [ -d $directory_name ]
 then
     mv html/writing_space/$fileDate.html $directory_name/.
@@ -66,7 +66,7 @@ rm $directory_name/$fileDate.html_TEMP
 sed -i 's/ccllaass#"p1"/class="p1"/g' $directory_name/$fileDate.html # reverse pattern removal
 sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse pattern removal
 
-echo > css_temp/temp-styles.css
+# echo > css_temp/temp-styles.css
 
 # if January-2020 doesnt exist
 # ask to create  January, if not, exit code
