@@ -27,4 +27,4 @@ pandoc $baseName/$shFileName.html -o writing_space/$shFileName.doc
 # pandoc $1 -o writing_space/$shFileName.docx
 
 # ---------- cleanup
-rm -v _temp/temp.txt
+rm -v _temp/*
