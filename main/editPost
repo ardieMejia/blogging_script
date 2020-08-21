@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [[ $1 == '' ]]; then
+    echo ; echo "Usage: ./main/editPost file_name.html"; echo
+    exit
+fi
+
+
+echo
+echo
+echo 'converting to .docx format...'
+echo 'Notes:'
+echo ' * No direct conversion to .doc format'
+echo ' * Save as .doc format'
+echo ' * Publishing blogposts will auto-clean ./writing_space'
+echo
+echo
+
+echo $1 | awk 'BEGIN{FS="/"}{print $3}' | awk 'BEGIN{FS="."}{print $1}' > _temp/temp.txt
+shFileName=`cat _temp/temp.txt`
+echo $1| awk 'BEGIN{FS="/"}{print $1"/"$2}' > _temp/temp.txt
+baseName=`cat _temp/temp.txt`
+
+pandoc $baseName/$shFileName.html -o writing_space/$shFileName.doc
+
+
+# pandoc $1 -o writing_space/$shFileName.docx
+
+# ---------- cleanup
+rm -v _temp/temp.txt
