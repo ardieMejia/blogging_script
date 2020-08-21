@@ -9,10 +9,14 @@
 # -----
 # ----- check if temp folder exists then create temp folder
 
-echo 'java -jar inside/wordToHtml.jar inside/word.doc'
+# ----- copy microsoft .doc to local, coz script does not work relatively
+cp -v ../../writing_space/word.doc .
+echo 'java -jar ../javaWordToHtml/wordToHtml.jar ../../writing_space/word.doc'
 sleep 1
 
-java -jar inside/wordToHtml.jar writing_space/word.doc
+java -jar ../javaWordToHtml/wordToHtml.jar word.doc
+# ----- cleanup of local copy
+rm -v word.doc
 
 
 
@@ -20,11 +24,11 @@ java -jar inside/wordToHtml.jar writing_space/word.doc
 
 echo
 fileDate=`date +"%d-%m-%Y"`
-mv html/writing_space/word.html html/writing_space/$fileDate.html
-directory_name="blogposts/"`date +"%B-%Y"` # Eg: January-2020
+mv html/word.html html/$fileDate.html
+directory_name="../../blogposts/"`date +"%B-%Y"` # Eg: January-2020
 if [ -d $directory_name ]
 then
-    mv html/writing_space/$fileDate.html $directory_name/.
+    mv html/$fileDate.html $directory_name/.
 else
     read -n 1 -p "Create new directory(Y/n)? <>" blogInput
     if [ "$blogInput" = "n" ]
@@ -34,11 +38,13 @@ else
     fi
     echo $0
     mkdir $directory_name
-    mv html/writing_space/$fileDate.html $directory_name/.
+    mv html/$fileDate.html $directory_name/.
 fi
+# ----- cleanup of local html/
+rmdir html
 
-sed -n '/\.s1/p' $directory_name/$fileDate.html >> _temp/temp-styles.css
-sed -n '/\.p1/p' $directory_name/$fileDate.html >> _temp/temp-styles.css
+sed -n '/\.s1/p' $directory_name/$fileDate.html >> ../../_temp/temp-styles.css
+sed -n '/\.p1/p' $directory_name/$fileDate.html >> ../../_temp/temp-styles.css
 
 sed -i 's/class="p1"/ccllaass#"p1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
 sed -i 's/class="s1"/ccllaass#"s1"/g' $directory_name/$fileDate.html # negate patterns out of attribute removal later
@@ -66,7 +72,7 @@ rm $directory_name/$fileDate.html_TEMP
 sed -i 's/ccllaass#"p1"/class="p1"/g' $directory_name/$fileDate.html # reverse pattern removal
 sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse pattern removal
 
-# echo > _temp/temp-styles.css
+# echo > ../../_temp/temp-styles.css
 
 # if January-2020 doesnt exist
 # ask to create  January, if not, exit code
@@ -82,5 +88,5 @@ sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse p
 # ---------- retain class s1 & p1
 
 # ---------- cleanup
-rm -v writing_space/*
+rm -v ../../writing_space/*
 
