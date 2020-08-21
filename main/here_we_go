@@ -81,5 +81,6 @@ sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse p
 # ---------- retain style for s1 & p1, concatenate to temporary css file
 # ---------- retain class s1 & p1
 
-
+# ---------- cleanup
+rm -v writing_space/*
 
