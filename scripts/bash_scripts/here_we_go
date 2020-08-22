@@ -2,14 +2,19 @@
 
 # ----- bash shell execution can mess with ur head when it comes
 # ----- environment (relative directory stuff)
-# ----- directories below work coz bash assumes environment is where you executed it from,
-# ----- (not where the file is located)
+# ----- do files work from where you call the script? or the scrips location?
 
 
-# -----
-# ----- check if temp folder exists then create temp folder
 
 # ----- copy microsoft .doc to local, coz script does not work relatively
+
+fileDate=`date +"%d-%m-%Y"`
+article_mHeader=`date +"%B-%Y"`
+directory_name="../../blogposts/"$article_mHeader # Eg: January-2020
+s_hour=`date +'%I'`; s_minute=`date +'%M'`; s_meridiem=`date +'%p'`
+# ********** We need different var naming strategy for directory, IF  **********
+
+
 cp -v ../../writing_space/word.doc .
 echo 'java -jar ../javaWordToHtml/wordToHtml.jar ../../writing_space/word.doc'
 sleep 1
@@ -23,9 +28,8 @@ rm -v word.doc
 
 
 echo
-fileDate=`date +"%d-%m-%Y"`
+
 mv html/word.html html/$fileDate.html
-directory_name="../../blogposts/"`date +"%B-%Y"` # Eg: January-2020
 if [ -d $directory_name ]
 then
     mv html/$fileDate.html $directory_name/.
@@ -60,6 +64,10 @@ cat $directory_name/$fileDate.html | tr -d '\n' > $directory_name/$fileDate.html
 # ---------- body content
 awk 'BEGIN{FS="<body"}{print "<body"$2}' $directory_name/$fileDate.html_TEMP | awk 'BEGIN{FS="</body"}{print $1"</body>"}' > $directory_name/$fileDate.html
 
+# ---------- extract title for later
+awk 'BEGIN{FS="\"s1\">"}{print $2}' $directory_name/$fileDate.html_TEMP | awk 'BEGIN{FS="</span"}{print $1}' > ../../_temp/tmp.txt
+articleTitle=`cat ../../_temp/tmp.txt`
+
 
 
 # ---------- Wow!! This was quite brilliant on my part!! removing html attributes by first splitting content into many lines, behaving like a parser I guess
@@ -74,19 +82,35 @@ sed -i 's/ccllaass#"s1"/class="s1"/g' $directory_name/$fileDate.html # reverse p
 
 # echo > ../../_temp/temp-styles.css
 
-# if January-2020 doesnt exist
-# ask to create  January, if not, exit code
-# move 12-01-2020.doc to January-2020/
-# remove header tags
-# insert simple tag
-# with 'Posted at 10:30 PM'
-# <div style="width:100px;margin-left:auto;margin-right:auto;float:center;display:block"></div>
+
+# dont forget 'Posted at 10:30 PM'
+
 
 
 # ------ more fixes required:
 # ---------- retain style for s1 & p1, concatenate to temporary css file
 # ---------- retain class s1 & p1
 
+# ---------- time should show like this: date +'%I:%M %p'
+
+
+
+
+# editPost is just sequential add, no need for search, just check (if) month heading exists
+
+awk '/'$article_mHeader'/{print $0}' ../../blogposts/index.html > ../../_temp/diredname.txt
+check_mH=`cat ../../_temp/diredname.txt`
+if [[ $check_mH == '' ]]; then # another bashism, very weird, its becoz the symbol [[ itself is an 'if' operator
+     echo '<h1>'$article_mHeader'</h1>' > ../../blogposts/index.html
+fi
+
+echo '<a href="'$fileDate'.html" id="'$fileDate'_'$s_hour'-'$s_minute$s_meridiem'">'\
+     $articleTitle\
+     '</a>' >> ../../blogposts/index.html
+
+
+
 # ---------- cleanup
 rm -v ../../writing_space/*
+rm -v ../../_temp/*
 
